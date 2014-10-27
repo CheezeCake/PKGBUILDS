@@ -1,0 +1,33 @@
+pkgname=openjabnab-git
+pkgver=9d3c3a0554
+pkgrel=1
+pkgdesc='An open PHP/C++-based proxy framework for the Nabaztag/Tag electronic pet'
+arch=('any')
+url='https://github.com/OpenJabNab/OpenJabNab'
+license=('GPL')
+
+install=openjabnab.install
+
+depends=('php' 'qt4')
+makedepends=('git')
+
+source=('git://github.com/OpenJabNab/OpenJabNab.git')
+md5sums=('SKIP')
+
+_pkgname=OpenJabNab
+_dest=opt
+
+build() {
+	cd "$srcdir/$_pkgname/server"
+	qmake-qt4 -r
+	make -j2
+}
+
+package() {
+	install -dm755 "$pkgdir/$_dest/$_pkgname/server"
+
+	cp -r "$srcdir/$_pkgname/http-wrapper" "$pkgdir/$_dest/$_pkgname"
+	cp -r "$srcdir/$_pkgname/server/bin" "$pkgdir/$_dest/$_pkgname/server"
+	install -Dm755 "$srcdir/$_pkgname/server/openjabnab.ini-dist" "$pkgdir/$_dest/$_pkgname/server/bin/openjabnab.ini"
+	install -Dm755 "$srcdir/$_pkgname/README.nginx" "$pkgdir/$_dest/$_pkgname/nginx-example.conf"
+}

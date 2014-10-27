@@ -1,0 +1,4 @@
+post_install() {
+	chown -R http:http /opt/OpenJabNab/http-wrapper
+	chmod -R 755 /opt/OpenJabNab/server/bin
+}
